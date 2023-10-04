@@ -13,7 +13,6 @@ const images = galleryItems
 </li>`
 )
 .join(" ");
-
 container.insertAdjacentHTML('afterbegin', images);
 
 function imageClick(event){
@@ -26,15 +25,18 @@ const originalAlt = event.target.getAttribute('alt');
 
 const instance = basicLightbox.create(`
   <img src="${originalImage}" alt="${originalAlt}">
-`);
+`, 
+{onShow: (instance) => {instance.element().addEventListener('keydown', closeInstance)}},
+{onClose: (instance) => {instance.element().removeEventListener('keydown', closeInstance)}},
+);
 instance.show();
 
-document.addEventListener('keydown', closeInstance);
+//document.addEventListener('keydown', closeInstance);
 
 function closeInstance(evt) {
     if (evt.code === "Escape") {
         instance.close();
-        document.removeEventListener('keydown', closeInstance);
+        //document.removeEventListener('keydown', closeInstance);
     }
 }
 }
